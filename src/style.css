@@ -3,12 +3,15 @@
     color: white;
     display: flex;
 /*     flex: 1;
- */    flex-flow: column;
-    
+ */   
+        flex-flow: column;
     align-self: center;
     align-items: center;
     align-content: center;
     justify-self: center;
     justify-items: center;
     justify-content: center;
+}
+main{
+    flex-flow: row;
 }
