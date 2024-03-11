@@ -14,23 +14,44 @@ const v_img = document.getElementById("image"); // Corrected to getElementsByCla
 
 let v_selected_card = 0;
 
+const f_fetch = new Promise((resolve, reject) => {
 
-// Fetch the data
-const f_fetch = async _ => {
     console.log(`f_fetch has STARTED.`)
     try {
-        v_response = await fetch(v_api_magicthegathering);
-        v_data = await v_response.json();
+        v_response =  fetch(v_api_magicthegathering);
+        v_data =  v_response.json();
         console.log(v_data);
+
+        f_populate_selector();
+
+        resolve(v_data);
     } catch (error) {
         console.log(`${this} has ended IN FAILURE. data is NOT obtained`);
         console.log(error);
-        return;
+        reject(new Error("Data not found")); // Operation failed
+
     }
-    console.log(`f_fetch has ENDED. data is obtained`);
-    f_populate_selector();
-    return v_data;
-}
+    finally{
+            console.log(`f_fetch has ENDED. data is obtained`);
+    }
+  });
+
+// Fetch the data
+// const  = new Promise async _ => {
+//     console.log(`f_fetch has STARTED.`)
+//     try {
+//         v_response = await fetch(v_api_magicthegathering);
+//         v_data = await v_response.json();
+//         console.log(v_data);
+//     } catch (error) {
+//         console.log(`${this} has ended IN FAILURE. data is NOT obtained`);
+//         console.log(error);
+//         return;
+//     }
+//     console.log(`f_fetch has ENDED. data is obtained`);
+//     f_populate_selector();
+//     return v_data;
+// }
 
 const f_populate_selector = async () => {
     console.log(`f_populate_Selector has STARTED.`)
