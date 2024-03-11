@@ -1,3 +1,35 @@
+/* 
+Constants and Variables:
+
+v_local_api_magicthegathering and v_local_api_yugioh: These variables hold local file paths for XML files.
+v_api_magicthegathering and v_api_yugioh: These variables hold URLs for APIs.
+v_response and v_data: These variables are declared to store response and parsed JSON data from API requests.
+v_select, v_previous, v_next, and v_img: These variables represent various HTML elements retrieved by their IDs.
+v_selected_card: This variable is initialized to store the index of the selected card.
+Promise Creation (f_fetch):
+
+A Promise is created to fetch data from the local API (v_local_api_magicthegathering).
+The fetched data is processed inside .then() blocks.
+If there is an error during fetching, it's caught using .catch() and logged.
+f_populate_selector Function:
+
+This function populates the <select> element (v_select) with options based on the fetched data.
+It loops through the v_data.cards array and creates an <option> element for each card's name.
+If the card doesn't have an image URL, it adds a placeholder option with the text 'NO_IMAGE'.
+f_display_card Function:
+
+This function is triggered when an option is selected from the <select> element.
+It retrieves the index of the selected option and updates the displayed image (v_img) with the corresponding card's image URL.
+f_button Function:
+
+This function is triggered when either the "NEXT" or "PREVIOUS" button is clicked.
+It updates the displayed image (v_img) based on the direction of the button click and the current selection.
+It handles cases where there's no image URL available for the selected card or when trying to go beyond the available cards.
+Event Listeners:
+
+Event listeners are attached to the <select> element (v_select) for the change event, and to the "NEXT" and "PREVIOUS" buttons for the click event.
+*/
+
 const v_local_api_magicthegathering = `./src/MGTGxml.xml`
 const v_local_api_yugioh = `./src/YGOxml.xml`
 const v_api_magicthegathering = `https://api.magicthegathering.io/v1/cards`;
@@ -15,43 +47,37 @@ const v_img = document.getElementById("image"); // Corrected to getElementsByCla
 let v_selected_card = 0;
 
 const f_fetch = new Promise((resolve, reject) => {
+    console.log(`f_fetch has STARTED.`);
 
-    console.log(`f_fetch has STARTED.`)
-    try {
-        v_response =  fetch(v_api_magicthegathering);
-        v_data =  v_response.json();
-        console.log(v_data);
+    fetch(v_local_api_magicthegathering)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
 
-        f_populate_selector();
+            return v_response = response.json();
 
-        resolve(v_data);
-    } catch (error) {
-        console.log(`${this} has ended IN FAILURE. data is NOT obtained`);
-        console.log(error);
-        reject(new Error("Data not found")); // Operation failed
+        })
+        .then(data => {
+            console.log(data); // Log the fetched data
+            resolve(data); // Resolve the promise with the fetched data
+            v_data = data;
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            reject(error); // Reject the promise with the error
+        });
+});
 
+f_fetch.then(data => {
+    console.log(`f_fetch has ENDED. Data is obtained`);
+    // Assuming f_populate_selector is defined somewhere
+    if (data !== undefined) {
+        f_populate_selector(data);
     }
-    finally{
-            console.log(`f_fetch has ENDED. data is obtained`);
-    }
-  });
-
-// Fetch the data
-// const  = new Promise async _ => {
-//     console.log(`f_fetch has STARTED.`)
-//     try {
-//         v_response = await fetch(v_api_magicthegathering);
-//         v_data = await v_response.json();
-//         console.log(v_data);
-//     } catch (error) {
-//         console.log(`${this} has ended IN FAILURE. data is NOT obtained`);
-//         console.log(error);
-//         return;
-//     }
-//     console.log(`f_fetch has ENDED. data is obtained`);
-//     f_populate_selector();
-//     return v_data;
-// }
+}).catch(error => {
+    console.error('Data not obtained:', error.message);
+});
 
 const f_populate_selector = async () => {
     console.log(`f_populate_Selector has STARTED.`)
@@ -147,7 +173,6 @@ function f_button(event) {
 const f_clear_image = _ => {
     //
 }
-f_fetch();
 
 // Attach event listener
 v_select.addEventListener('change', f_display_card);
