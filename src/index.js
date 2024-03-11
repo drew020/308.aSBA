@@ -1,4 +1,7 @@
 /* 
+AI Summerized My Code
+------------------------------------------------------------------------------------------
+
 Constants and Variables:
 
 v_local_api_magicthegathering and v_local_api_yugioh: These variables hold local file paths for XML files.
@@ -6,28 +9,79 @@ v_api_magicthegathering and v_api_yugioh: These variables hold URLs for APIs.
 v_response and v_data: These variables are declared to store response and parsed JSON data from API requests.
 v_select, v_previous, v_next, and v_img: These variables represent various HTML elements retrieved by their IDs.
 v_selected_card: This variable is initialized to store the index of the selected card.
+------------------------------------------------------------------------------------------
+
 Promise Creation (f_fetch):
 
 A Promise is created to fetch data from the local API (v_local_api_magicthegathering).
 The fetched data is processed inside .then() blocks.
 If there is an error during fetching, it's caught using .catch() and logged.
+------------------------------------------------------------------------------------------
+
 f_populate_selector Function:
 
 This function populates the <select> element (v_select) with options based on the fetched data.
 It loops through the v_data.cards array and creates an <option> element for each card's name.
 If the card doesn't have an image URL, it adds a placeholder option with the text 'NO_IMAGE'.
+------------------------------------------------------------------------------------------
+
 f_display_card Function:
 
 This function is triggered when an option is selected from the <select> element.
 It retrieves the index of the selected option and updates the displayed image (v_img) with the corresponding card's image URL.
+------------------------------------------------------------------------------------------
+
 f_button Function:
 
 This function is triggered when either the "NEXT" or "PREVIOUS" button is clicked.
 It updates the displayed image (v_img) based on the direction of the button click and the current selection.
 It handles cases where there's no image URL available for the selected card or when trying to go beyond the available cards.
+------------------------------------------------------------------------------------------
+
 Event Listeners:
 
 Event listeners are attached to the <select> element (v_select) for the change event, and to the "NEXT" and "PREVIOUS" buttons for the click event.
+------------------------------------------------------------------------------------------
+*/
+
+/* 
+------------------------------------------------------------------------------------------
+
+Detailed Break down of Fetch process with promise - AI Summerized
+
+Promise Creation (f_fetch):
+
+This function creates a Promise called f_fetch which is used to fetch data from an API endpoint.
+It starts by logging a message indicating that the promise has started.
+Then it makes a fetch request to v_local_api_magicthegathering.
+The fetch request returns a Promise, which is handled using .then() and .catch() methods.
+Inside the first .then() block, the response is checked for its status. If it's not okay (status other than 200), an error is thrown.
+If the response is okay, it proceeds to parse the response as JSON and stores it in v_response.
+The parsed data is then logged, resolved with resolve(data), and stored in v_data.
+If there's an error during fetching or parsing, it's caught in the .catch() block and logged.
+The f_fetch promise is returned.
+------------------------------------------------------------------------------------------
+
+f_populate_selector Function:
+
+This function populates the <select> element (v_select) with options based on the fetched data.
+It starts by logging a message indicating that the function has started.
+Then it loops through each card object in the v_data.cards array.
+For each card, it checks if it has an image URL (card.imageUrl is not undefined).
+If it has an image URL, it creates an <option> element with the card's name as text content and adds it to the <select> element.
+If the card doesn't have an image URL, it creates an <option> element with the text 'NO_IMAGE' as both value and text content, and adds it to the <select> element.
+Finally, it logs a message indicating that the function has ended.
+------------------------------------------------------------------------------------------
+
+f_display_card Function:
+
+This function is triggered when an option is selected from the <select> element.
+It starts by preventing the default behavior of the event (form submission).
+Then it checks if the selected option's text content is not 'NO_IMAGE'.
+If it's not 'NO_IMAGE', it retrieves the index of the selected option.
+It then gets the corresponding card's image URL from v_data.cards array using the index and updates the src attribute of v_img element with the URL.
+If there's an error during this process, it's caught and logged.
+------------------------------------------------------------------------------------------
 */
 
 const v_local_api_magicthegathering = `./src/MGTGxml.xml`
