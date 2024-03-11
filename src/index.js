@@ -83,6 +83,9 @@ It then gets the corresponding card's image URL from v_data.cards array using th
 If there's an error during this process, it's caught and logged.
 ------------------------------------------------------------------------------------------
 */
+// import { clear, createCarouselItem, appendCarousel } from "./Carousel.js";
+// import { clear, createCarouselItem, appendCarousel } from "./Carousel.js";
+// import { f, createCarouselItem, appendCarousel } from "./Carousel.js";
 
 const v_local_api_magicthegathering = `./src/MGTGxml.xml`
 const v_local_api_yugioh = `./src/YGOxml.xml`
