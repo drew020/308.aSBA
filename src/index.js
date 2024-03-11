@@ -56,17 +56,18 @@ const f_populate_selector = async () => {
 const f_display_card = async (event) => {
     // Stops initial behavior
     event.preventDefault();
+    if (event.target.textContent != 'NO_IMAGE') {
+        const l_index = event.target.selectedIndex;
+        const l_pic_url = v_data.cards[l_index].imageUrl; // corrected accessing selected card
+        try {
+            v_img.setAttribute("src", l_pic_url); // corrected attribute setting
+            v_selected_card = l_index;
+        } catch (error) {
+            console.error(error);
+        };
 
-    const l_index = event.target.selectedIndex + 1;
-    const l_pic_url = v_data.cards[l_index].imageUrl; // corrected accessing selected card
-    try {
-        v_img.setAttribute("src", l_pic_url); // corrected attribute setting
-        v_selected_card = l_index;
-    } catch (error) {
-        console.error(error);
-    };
-
-    console.log(`card index: ${l_index - 1}`)
+        console.log(`card index: ${l_index - 1}`)
+    }
 }
 
 function f_button(event) {
@@ -97,7 +98,7 @@ function f_button(event) {
     else {
         if (0 < v_selected_card) {
             v_selected_card--;
-        } 
+        }
         try {
             if (v_data.cards[v_selected_card].imageUrl) {
                 let l_pic_url = v_data.cards[v_selected_card].imageUrl; // corrected accessing selected card
